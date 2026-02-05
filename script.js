@@ -109,7 +109,7 @@ function verify(selected, button, correct) {
         setTimeout(combo >= 5 ? showRoulette : nextQuestion, 800);
     } else {
         button.classList.add('wrong');
-        handleFail(`Zuzena: ${correct}`);
+        handleFail(`${correct}`);
     }
 }
 

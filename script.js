@@ -3,7 +3,7 @@ let currentWord = {}, currentOptionsCount = 2, timerInt;
 let isSpinning = false, crazySpeed = false, currentMode = 'eu-es';
 let audioCtx = null, soundEnabled = true;
 
-const premios = ["❤️ Bizia +1", "❄️ Izoztu", "🔄 Hizkuntza Aldatu", "⚡ Abiadura Zoroa", "💀 Komodina Kendu", "🔥 Denbora -2s", "🚫 Aukera +1", "🎭 Komodina Kendu"];
+const premios = ["❤️ Vida +1", "❄️ Congelar", "🔄 voltear idioma", "⚡ flash", "🎭💀 Comodín -1", "🔥 tiempo -2s", "🚫 Respuestas +1"/*, "🎭 Komodina Kendu"*/];
 
 window.onload = () => {
     // Cargar categorías del diccionario
@@ -57,7 +57,7 @@ function setAllCats(state) {
 
 function startArcadeGame() {
     const active = Array.from(document.querySelectorAll('#setup-categories input:checked')).map(cb => cb.value);
-    if (!active.length) return alert("Hautatu kategoria bat gutxienez");
+    if (!active.length) return alert("Seleccione al menos una categoría.");
     document.getElementById('setup-screen').classList.add('hidden');
     document.getElementById('hud').classList.remove('hidden');
     document.getElementById('game-card').classList.remove('hidden');
@@ -125,7 +125,7 @@ function startTimer() {
         let p = (timeLeft / limit) * 100;
         bar.style.width = p + "%";
         bar.style.background = p > 60 ? "#2a9d8f" : p > 25 ? "#e9c46a" : "#e76f51";
-        if (timeLeft <= 0) { clearInterval(timerInt); handleFail("Denbora amaitu da!"); }
+        if (timeLeft <= 0) { clearInterval(timerInt); handleFail("¡Tiempo agotado!"); }
     }, 100);
 }
 
@@ -140,7 +140,7 @@ function handleFail(msg) {
         if (lives <= 0) {
             showGameOver();
         } else {
-            document.getElementById('correction-text').innerHTML = `<h2>Huts egin duzu!</h2><p>${msg}</p>`;
+            document.getElementById('correction-text').innerHTML = `<h2>¡Fracasaste!</h2><p>${msg}</p>`;
             document.getElementById('fail-modal').classList.remove('hidden');
             document.getElementById('game-card').classList.remove('shake');
         }
@@ -226,13 +226,13 @@ function spinWheel() {
 
 function applyPrize(i) {
     switch (parseInt(i)) {
-        case 0: lives++; return "Bizia +1 ❤️";
-        case 1: clearInterval(timerInt); return "Denbora izoztu da! ❄️";
-        case 2: setMode(currentMode === 'eu-es' ? 'es-eu' : 'eu-es'); return "Hizkuntza aldatu da! 🔄";
-        case 3: crazySpeed = true; return "Hurrengoa... ABIADURA ZOROA! ⚡";
-        case 4: case 7: jokers = Math.max(0, jokers - 1); updateHUD('joker'); return "Komodina galdu duzu 💀";
-        case 5: maxTime = Math.max(4000, maxTime - 2000); return "Denbora azkarrago doa! 🔥";
-        case 6: currentOptionsCount = Math.min(8, currentOptionsCount + 1); return "Aukera bat gehiago! 🚫";
+        case 0: lives++; return "Vidas +1 ❤️";
+        case 1: clearInterval(timerInt); return "Tiempo congelado ❄️";
+        case 2: setMode(currentMode === 'eu-es' ? 'es-eu' : 'eu-es'); return "idiomas cambian su posición! 🔄";
+        case 3: crazySpeed = true; return "Próximo: Velocidad loca! ⚡";
+        case 4: case 7: jokers = Math.max(0, jokers - 1); updateHUD('joker'); return "Comodines -1 💀";
+        case 5: maxTime = Math.max(4000, maxTime - 2000); return "El tiempo pasa más rápido! 🔥";
+        case 6: currentOptionsCount = Math.min(8, currentOptionsCount + 1); return "Opciones de respuesta +1 🚫";
     }
 }
 
@@ -244,7 +244,7 @@ function updateHUD(lostItem = null) {
     jCont.innerHTML = "🃏".repeat(jokers) + (lostItem === 'joker' ? '<span class="lost-anim">🃏</span>' : '');
     document.getElementById('points').innerText = "⭐ " + score;
     document.getElementById('combo-meter').innerText = `Racha: ${combo}/5 🔥`;
-    document.getElementById('block-info').innerText = `Bloke: ${block}`;
+    document.getElementById('block-info').innerText = `Bloque: ${block}`;
     
     const jBtn = document.getElementById('joker-btn');
     if (jBtn) {

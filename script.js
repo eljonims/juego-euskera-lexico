@@ -255,4 +255,4 @@ function updateHUD(lostItem = null) {
 
 function closeFailModal() { document.getElementById('fail-modal').classList.add('hidden'); nextQuestion(); }
 function toggleMute() { soundEnabled = !soundEnabled; document.getElementById('mute-btn').innerText = soundEnabled ? "🔊" : "🔇"; }
-function resetStorage() { if (confirm("Datu guztiak ezabatu?")) { localStorage.clear(); location.reload(); } }
+function resetStorage() { if (confirm("¿Borrar todos los datos?")) { localStorage.clear(); location.reload(); } }

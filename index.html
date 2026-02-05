@@ -21,10 +21,10 @@
                 
                 <div class="bulk-actions">
                     <button onclick="setAllCats(true)" class="bulk-btn select-all">
-                        <span class="icon">✓</span> Hautatu dena
+                        <span class="icon">✓</span> Marcar todos
                     </button>
                     <button onclick="setAllCats(false)" class="bulk-btn deselect-all">
-                        <span class="icon">✕</span> Garbitu
+                        <span class="icon">✕</span> Limpiar
                     </button>
                 </div>
             </div>
@@ -36,10 +36,10 @@
 
             <!-- PIE FIJO: HASI y Gestión -->
             <div class="setup-fixed-bottom">
-                <button onclick="startArcadeGame()" class="start-btn">HASI</button>
+                <button onclick="startArcadeGame()" class="start-btn">Comenzar</button>
                 <div class="management-btns">
-                    <button onclick="showHistory()" title="Estatistikak">📊 Estatistikak</button>
-                    <button onclick="resetStorage()" class="btn-danger">🗑️ Ezabatu</button>
+                    <button onclick="showHistory()" title="Estatistikak">📊 Estadísticas</button>
+                    <button onclick="resetStorage()" class="btn-danger">🗑️ Reiniciar</button>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
         <div id="timer-container"><div id="timer-bar"></div></div>
         <div class="hud-line secondary">
             <div id="combo-meter">Racha: 0/5 🔥</div>
-            <div id="block-info">Bloke: 1</div>
+            <div id="block-info">Bloque: 1</div>
         </div>
     </div>
 
@@ -77,31 +77,31 @@
     <div id="fail-modal" class="overlay hidden">
         <div class="modal-box">
             <div id="correction-text"></div>
-            <button onclick="closeFailModal()" class="start-btn">JARRAITU</button>
+            <button onclick="closeFailModal()" class="start-btn">Continuar</button>
         </div>
     </div>
 
     <!-- MODAL DE RULETA -->
     <div id="roulette-modal" class="overlay hidden">
         <div class="modal-box">
-            <h2 class="ruleta-title">Zorte on!</h2>
+            <h2 class="ruleta-title">Buena suerte!</h2>
             <div class="wheel-container">
                 <div id="wheel-pointer"></div>
                 <div id="wheel"><div id="wheel-labels"></div></div>
             </div>
-            <button id="spin-btn" onclick="spinWheel()" class="start-btn">GIRATU</button>
+            <button id="spin-btn" onclick="spinWheel()" class="start-btn">Girar</button>
         </div>
     </div>
 
     <!-- MODAL DE FIN DE JUEGO (AMAIERA) -->
     <div id="game-over-modal" class="overlay hidden">
         <div class="modal-box game-over-box">
-            <h1 class="gameOver-title">AMAIERA</h1>
+            <h1 class="gameOver-title">Fin de partida</h1>
             <div class="final-stats">
-                <p>Puntuazioa: <span id="final-score">0</span></p>
-                <p class="best-score-line">Ennrekorra: <span id="best-score">0</span></p>
+                <p>Puntuación: <span id="final-score">0</span></p>
+                <p class="best-score-line">Récord: <span id="best-score">0</span></p>
             </div>
-            <button onclick="location.reload()" class="start-btn">BERRIRO JOKATU</button>
+            <button onclick="location.reload()" class="start-btn">Jugar de nuevo</button>
         </div>
     </div>
 

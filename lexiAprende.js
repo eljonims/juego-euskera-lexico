@@ -4,18 +4,20 @@ class LexiAprende {
                 this.nucleoIU = {
                         "titulo": "LexiAprende",
                         "puntos": "Puntuación",
-                        "aciertos": "Aciertos",
-                        "btn-inicio": "Empezar",
-                        "msg-carga": "Cargando léxico...",
-                        "msg-error": "Error de conexión",
-                        "msg-inicio": "Iniciando sistema...",
                         "inicio": "Empezar Juego",
-                        "error": "Error de carga",
+                        "msg-inicio": "despertando...",
+                        "msg-conectar-db": "Sincronizando expediente de aprendizaje...",
+                        "msg-db-listo": "Almacén listo para analítica",
+                        "msg-buscando-temas": "Buscando categorías de léxico...",
+                        "msg-sistema-listo": "¡Sistema preparado! Selecciona tu reto",
+                        "msg-error-red": "No se pudo conectar con el servidor",
+                        "msg-error-critico": "ERROR CRÍTICO",
+                        // Extras para el juego
                         "ruleta": "¡Gira la Ruleta!",
                         "vida-extra": "¡Vida Extra!",
                         "comodin-menos": "Pierdes un comodín",
                         "tiempo-stop": "Tiempo Congelado",
-                        "idioma-swap": "Idiomas Invertidos"
+                        "idioma-swap": "Modo Mareo: Idiomas Invertidos"
                 };
 
                 // 📊 ESTADO INICIAL DEL JUEGO
@@ -52,33 +54,41 @@ class LexiAprende {
                 return this.datos?.config?.textos?.[clave] || this.nucleoIU[clave] || `{${clave}}`;
         }
 
-        async lanzar(url) {
-                this.bitacora(this.t('msg-inicio'), 10);
-                await this.esperar(800);
+        /**
+ * 🚀 Arranca el motor y coordina los sistemas iniciales
+ * Usa el traductor t() para que los mensajes sean universales.
+ */
+        async lanzar(urlCatalogo) {
+                // 1. Iniciamos la bitácora con el nombre del motor
+                this.bitacora(`${this.t('titulo')} ${this.t('msg-inicio')}`, 10);
 
                 try {
-                        this.bitacora(this.t('msg-carga') + `: ${url}`, 40);
-                        const respuesta = await fetch(url);
-                        if (!respuesta.ok) throw new Error();
-                        this.datos = await respuesta.json();
-                        await this.esperar(1000);
-
-                        this.bitacora("¡Todo listo!", 100);
+                        // 2. Conectamos al Almacén Triple (IndexedDB)
+                        this.bitacora(this.t('msg-conectar-db'), 30);
+                        await this.conectarAlmacen();
                         await this.esperar(600);
+                        this.bitacora("[OK] " + this.t('msg-db-listo'), 45);
 
-                        // Finalizar carga (Igual que en MotorEduca)
-                        const pantalla = document.getElementById('pantalla-lanzamiento');
-                        pantalla.style.opacity = "0";
-                        setTimeout(() => {
-                                pantalla.classList.add('oculto');
-                                document.getElementById('app').classList.remove('oculto');
-                                document.getElementById('titulo-juego').innerText = this.t('titulo');
-                        }, 600);
+                        // 3. Cargamos el catálogo de temas disponibles de GitHub
+                        this.bitacora(this.t('msg-buscando-temas'), 60);
+                        const respuesta = await fetch(urlCatalogo);
 
-                } catch (e) {
-                        this.bitacora(this.t('msg-error'), 100);
+                        if (!respuesta.ok) throw new Error(this.t('msg-error-red'));
+                        const temas = await respuesta.json();
+
+                        // 4. Todo preparado para el Menú
+                        this.bitacora(this.t('msg-sistema-listo'), 100);
+                        await this.esperar(800);
+
+                        this.mostrarMenu(temas);
+
+                } catch (error) {
+                        // Si algo falla, el error también pasa por el traductor si es posible
+                        this.bitacora(`${this.t('msg-error-critico')}: ${error.message || error}`, 100);
+                        console.error("Fallo LexiAprende:", error);
                 }
         }
+
         /**
   * 🗄️ Inicializa el Almacén con soporte para analítica de aprendizaje
   */

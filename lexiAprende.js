@@ -19,7 +19,10 @@ class LexiAprende {
                         "tiempo-stop": "Tiempo Congelado",
                         "idioma-swap": "Modo Mareo: Idiomas Invertidos",
                         "btn-categorias-todas": "Seleccionar Todo",
-                        "btn-categorias-ninguna": "Deseleccionar Todo"
+                        "btn-categorias-ninguna": "Deseleccionar Todo",
+                        "nvl-1-pista": "BÁSICO",
+                        "nvl-2-pista": "MEDIO",
+                        "nvl-3-pista": "EXPERTO"
                 };
 
                 // 📊 ESTADO INICIAL DEL JUEGO
@@ -133,36 +136,65 @@ class LexiAprende {
                         peticion.onerror = () => rechazar("Error crítico: Almacén inaccesible.");
                 });
         }
-        /**
- * 📋 Genera la interfaz de selección de temas con nombres descriptivos
- * @param {Array} catalogoTemas - Lista de objetos con los temas disponibles
- */
+
         mostrarMenu(catalogoTemas) {
-                const zonaListado = document.getElementById('tablero-juego'); // Donde inyectamos los botones
-                zonaListado.innerHTML = ""; // Limpiamos el escenario
+                const zonaListado = document.getElementById('tablero-juego');
+                zonaListado.innerHTML = "";
                 zonaListado.className = "contenedor-listado-categorias";
 
+                // 1. Preparamos el HTML del Selector de Dificultad (con tus claves de traducción)
+                const htmlDificultad = `
+        <div class="grupo-selector-dificultad">
+            <button class="boton-nivel-dificultad" data-accion="cambiar-dificultad" data-id="nvl-1">
+                <span class="icono-nivel">🌱</span>
+                <span class="texto-pista-nivel">${this.t('nvl-1-pista')}</span>
+            </button>
+            <button class="boton-nivel-dificultad" data-accion="cambiar-dificultad" data-id="nvl-2">
+                <span class="icono-nivel">🌿</span>
+                <span class="texto-pista-nivel">${this.t('nvl-2-pista')}</span>
+            </button>
+            <button class="boton-nivel-dificultad" data-accion="cambiar-dificultad" data-id="nvl-3">
+                <span class="icono-nivel">🌳</span>
+                <span class="texto-pista-nivel">${this.t('nvl-3-pista')}</span>
+            </button>
+        </div>
+    `;
+
+                // 2. Construimos la Barra de Herramientas completa
+                const cabecera = `
+        <div class="barra-herramientas-seleccion">
+            <button class="boton-accion-masiva-categorias" 
+                    data-accion="alternar-todos-temas" 
+                    id="btn-masivo">
+                ${this.t('btn-categorias-ninguna')}
+            </button>
+            
+            ${htmlDificultad} 
+        </div>
+    `;
+
+                // 3. Inyectamos la cabecera y preparamos las filas de temas
+                let htmlFilas = "";
                 catalogoTemas.forEach(tema => {
-                        // Creamos el botón de fila
-                        const botonTema = document.createElement('div');
-                        botonTema.className = 'boton-fila-seleccion-tema';
-
-                        // Inyectamos el contenido con las nuevas clases descriptivas
-                        // Nota: El icono 🌱 se cambiará luego por el nivel de IndexedDB
-                        botonTema.innerHTML = `
-                <span class="texto-nombre-categoria">${tema.titulo}</span>
-                <span class="icono-maestria-evolutiva">🌱</span>
-            `;
-
-                        // Lógica de clic para encender/apagar el neón
-                        botonTema.onclick = () => {
-                                botonTema.classList.toggle('estado-seleccionado');
-                        };
-
-                        zonaListado.appendChild(botonTema);
+                        htmlFilas += `
+                        <div class="boton-fila-seleccion-tema estado-seleccionado" 
+                                data-accion="seleccionar-tema" 
+                                data-id="${tema.id}">
+                                <span class="texto-nombre-categoria">${tema.titulo}</span>
+                                <span class="icono-maestria-evolutiva">🌱</span>
+                        </div>
+                        `;
                 });
+
+                // Colocamos todo en el DOM
+                zonaListado.parentElement.insertAdjacentHTML('afterbegin', cabecera);
+                zonaListado.innerHTML = htmlFilas;
+
+                // 4. Activamos por defecto el nivel que el motor tenga (ej: nvl-1)
+                this.actualizarVisualDificultad();
         }
-       
+
+
         conectarEventos() {
                 document.addEventListener('click', (evento) => { //escucha global (Delegación de eventos)
                         // Buscamos el elemento con data-accion más cercano al clic

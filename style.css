@@ -102,3 +102,69 @@ body {
         gap: 20px;
         margin-top: 20px;
 }
+
+/* --- COMPONENTES DEL MENÚ DE SELECCIÓN --- */
+
+/* Contenedor principal que envuelve todos los botones de temas */
+.contenedor-listado-categorias {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    max-height: 70vh; /* Zona desplazable */
+    overflow-y: auto;
+}
+
+/* El botón individual de cada tema (Fila Neón) */
+.boton-fila-seleccion-tema {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 75px;
+    padding: 0 25px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Texto del nombre del tema dentro del botón */
+.texto-nombre-categoria {
+    flex-grow: 1;
+    text-align: left;
+    white-space: nowrap;      /* No salta de línea */
+    overflow: hidden;         /* Corta lo que sobre */
+    text-overflow: ellipsis;  /* Añade "..." si es muy largo */
+    font-size: clamp(1rem, 4vw, 1.4rem); /* Fuente flexible */
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+/* Icono evolutivo (Semilla, Brote, Árbol) */
+.icono-maestria-evolutiva {
+    font-size: 1.6rem;
+    filter: grayscale(1); /* Apagado por defecto */
+    transition: 0.3s;
+    margin-left: 15px;
+}
+
+/* --- ESTADOS DE SELECCIÓN (EL NEÓN) --- */
+
+/* Cuando el botón está marcado por el usuario */
+.boton-fila-seleccion-tema.estado-seleccionado {
+    border-color: #00ffcc;
+    background: #1a2a2a;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+}
+
+.estado-seleccionado .texto-nombre-categoria {
+    color: #ffffff;
+    text-shadow: 0 0 8px #00ffcc;
+}
+
+.estado-seleccionado .icono-maestria-evolutiva {
+    filter: grayscale(0); /* Se ilumina el color del icono */
+}

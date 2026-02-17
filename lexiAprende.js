@@ -131,5 +131,35 @@ class LexiAprende {
                         peticion.onerror = () => rechazar("Error crítico: Almacén inaccesible.");
                 });
         }
+        /**
+ * 📋 Genera la interfaz de selección de temas con nombres descriptivos
+ * @param {Array} catalogoTemas - Lista de objetos con los temas disponibles
+ */
+        mostrarMenu(catalogoTemas) {
+                const zonaListado = document.getElementById('tablero-juego'); // Donde inyectamos los botones
+                zonaListado.innerHTML = ""; // Limpiamos el escenario
+                zonaListado.className = "contenedor-listado-categorias";
+
+                catalogoTemas.forEach(tema => {
+                        // Creamos el botón de fila
+                        const botonTema = document.createElement('div');
+                        botonTema.className = 'boton-fila-seleccion-tema';
+
+                        // Inyectamos el contenido con las nuevas clases descriptivas
+                        // Nota: El icono 🌱 se cambiará luego por el nivel de IndexedDB
+                        botonTema.innerHTML = `
+                <span class="texto-nombre-categoria">${tema.titulo}</span>
+                <span class="icono-maestria-evolutiva">🌱</span>
+            `;
+
+                        // Lógica de clic para encender/apagar el neón
+                        botonTema.onclick = () => {
+                                botonTema.classList.toggle('estado-seleccionado');
+                        };
+
+                        zonaListado.appendChild(botonTema);
+                });
+        }
+
 
 }

@@ -256,3 +256,15 @@ function updateHUD(lostItem = null) {
 function closeFailModal() { document.getElementById('fail-modal').classList.add('hidden'); nextQuestion(); }
 function toggleMute() { soundEnabled = !soundEnabled; document.getElementById('mute-btn').innerText = soundEnabled ? "🔊" : "🔇"; }
 function resetStorage() { if (confirm("¿Borrar todos los datos?")) { localStorage.clear(); location.reload(); } }
+// Abrir el almacén de récords
+function conectarRecords() {
+    return new Promise((res) => {
+        const peticion = indexedDB.open("Jolasa_DB", 1);
+        peticion.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            // Guardaremos: { id: "familia", aciertos: 10, completado: true }
+            db.createObjectStore("records", { keyPath: "id" });
+        };
+        peticion.onsuccess = (e) => res(e.target.result);
+    });
+}

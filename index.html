@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiAprende v1.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 📟 LA BITÁCORA (Pantalla de Carga) -->
+    <div id="pantalla-lanzamiento" class="capa-inicio">
+        <div class="modulo-carga">
+            <div class="icono-sistema">🚀</div>
+            <h1 class="titulo-sistema">LexiAprende</h1>
+            <div class="contenedor-barra">
+                <div id="barra-progreso" class="progreso-relleno" style="width: 0%"></div>
+            </div>
+            <div id="bitacora-lanzamiento" class="lista-bitacora"></div>
+        </div>
+    </div>
+
+    <!-- 🎮 EL ESCENARIO DEL JUEGO (Oculto al inicio) -->
+    <main id="app" class="oculto">
+        <header>
+            <h2 id="titulo-juego">---</h2>
+            <div id="marcador-puntos">---</div>
+        </header>
+        <div id="tablero-juego">
+            <!-- Aquí LexiAprende pintará las parejas -->
+        </div>
+    </main>
+
+    <script src="LexiAprende.js"></script>
+    <script>
+        // Lanzamos el motor apuntando a un JSON que crearemos ahora
+        const App = new LexiAprende();
+        App.lanzar("datos/eu_familia.json");
+    </script>
+</body>
+</html>

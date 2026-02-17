@@ -17,7 +17,9 @@ class LexiAprende {
                         "vida-extra": "¡Vida Extra!",
                         "comodin-menos": "Pierdes un comodín",
                         "tiempo-stop": "Tiempo Congelado",
-                        "idioma-swap": "Modo Mareo: Idiomas Invertidos"
+                        "idioma-swap": "Modo Mareo: Idiomas Invertidos",
+                        "btn-categorias-todas": "Seleccionar Todo",
+                        "btn-categorias-ninguna": "Deseleccionar Todo"
                 };
 
                 // 📊 ESTADO INICIAL DEL JUEGO
@@ -160,6 +162,35 @@ class LexiAprende {
                         zonaListado.appendChild(botonTema);
                 });
         }
+       
+        conectarEventos() {
+                document.addEventListener('click', (evento) => { //escucha global (Delegación de eventos)
+                        // Buscamos el elemento con data-accion más cercano al clic
+                        const objetivo = evento.target.closest('[data-accion]');
+                        if (!objetivo) return;
+
+                        // Extraemos la "pareja de datos" técnica
+                        const accion = objetivo.dataset.accion;
+                        const id = objetivo.dataset.id || null; // El ID es opcional pero lo capturamos ya
+
+                        // El Cerebro que decide según la acción
+                        switch (accion) {
+                                case 'seleccionar-tema':
+                                        this.gestionarSeleccionTema(objetivo, id);
+                                        break;
+                                case 'alternar-todos-temas':
+                                        this.gestionarSeleccionMasiva();
+                                        break;
+                                case 'lanzar-juego':
+                                        this.prepararPartida();
+                                        break;
+                                case 'cambiar-dificultad':
+                                        this.gestionarDificultad(objetivo, id); // Aquí 'id' será el nivel (1, 2, 3)
+                                        break;
+                        }
+                });
+        }
+
 
 
 }

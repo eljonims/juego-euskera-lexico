@@ -219,10 +219,10 @@ class LexiAprende {
                         // El Cerebro que decide según la acción
                         switch (accion) {
                                 case 'seleccionar-tema':
-                                        this.gestionarSeleccionTema(objetivo, id);
+                                        this.gestionarSeleccionFila(objetivo, id);
                                         break;
                                 case 'alternar-todos-temas':
-                                        this.gestionarSeleccionMasiva();
+                                        this.ejecutarSeleccionMasiva();
                                         break;
                                 case 'lanzar-juego':
                                         this.prepararPartida();
@@ -250,7 +250,7 @@ class LexiAprende {
         }
 
         /**
-         * ⚙️ Cambia el nivel de dificultad y actualiza la interfaz
+         *  Cambia el nivel de dificultad y actualiza la interfaz
          */
         gestionarDificultad(elemento, idNivel) {
                 this.nivelSeleccionado = idNivel; // Guardamos nvl-1, nvl-2 o nvl-3
@@ -259,11 +259,27 @@ class LexiAprende {
 
                 // Opcional: Podríamos guardar esto en IndexedDB aquí mismo
         }
+        /**
+         * Gestiona la selección individual de cada tema y actualiza la lista de juego
+         */
         gestionarSeleccionFila(elemento, id) {
+                // 1. Efecto visual (Neón)
                 elemento.classList.toggle('estado-seleccionado');
-                // Nota: Aquí el motor solo cambia el color. En el siguiente paso guardaremos el ID.
-                console.log("Tema tocado:", id);
+
+                // 2. Lógica de datos: ¿Añadir o Quitar de la lista de juego?
+                if (elemento.classList.contains('estado-seleccionado')) {
+                        // Si no está ya, lo metemos
+                        if (!this.listaCategoriasSeleccionadas.includes(id)) {
+                                this.listaCategoriasSeleccionadas.push(id);
+                        }
+                } else {
+                        // Si lo desmarca, lo sacamos del array
+                        this.listaCategoriasSeleccionadas = this.listaCategoriasSeleccionadas.filter(item => item !== id);
+                }
+
+                console.log("Categorías activas:", this.listaCategoriasSeleccionadas);
         }
+
 
 
 
